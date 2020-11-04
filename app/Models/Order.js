@@ -21,6 +21,10 @@ class Order extends Model {
     return this.hasMany('App/Models/Comment')
   }
 
+  product_order(){
+    return this.hasMany('App/Models/ProductsOrder')
+  }
+
 }
 
 module.exports = Order

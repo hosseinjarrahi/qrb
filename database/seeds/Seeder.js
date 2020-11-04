@@ -11,6 +11,8 @@ class Seeder {
     await Database.truncate('coffes');
     await Database.truncate('menus');
     await Database.truncate('products');
+    await Database.truncate('orders');
+    await Database.truncate('products_orders');
 
     await Factory
       .model('App/Models/User')
@@ -26,6 +28,14 @@ class Seeder {
 
     await Factory
       .model('App/Models/Product')
+      .createMany(10)
+    
+    await Factory
+      .model('App/Models/Order')
+      .createMany(10)
+    
+    await Factory
+      .model('App/Models/ProductsOrder')
       .createMany(10)
 
   }

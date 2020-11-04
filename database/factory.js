@@ -41,3 +41,24 @@ Factory.blueprint('App/Models/Menu', (faker) => {
     body: 'پیزا',
   }
 });
+
+Factory.blueprint('App/Models/Order', (faker) => {
+  return {
+    coffe_id: 1,
+    user_id: 1,
+    desk_id: 1,
+    total: 110,
+    success_taken: 'open',
+    pay_state: 'success'
+  }
+});
+
+Factory.blueprint('App/Models/ProductsOrder', (faker) => {
+  return {
+    product_id: 1,
+    product_name: "موکا",
+    product_price: 12,
+    order_id: 1,
+    count: 1
+  }
+});

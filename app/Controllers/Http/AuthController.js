@@ -98,7 +98,7 @@ class AuthController {
     }
 
     let reset_token = await randomstring.generate(15);
-    user.fill({reset_token});
+    user.reset_token = reset_token;
     await user.save()
 
     return response.status(200).json({message: 'تایید شد.', reset_token, user});
@@ -119,7 +119,8 @@ class AuthController {
       return response.status(400).json({message: 'پس از دو دقیقه دوباره امتحان کنید.'});
     }
 
-    this.sendCode(request.post().phone)
+    user.active_code = await this.sendCode(request.post().phone);
+    user.save();
 
     return response.status(200).json({message: 'کد با موفقیت ارسال شد.'});
   }
@@ -130,6 +131,9 @@ class AuthController {
     if (!user) {
       return response.status(500).json({message: 'مشکلی رخ داده است.'});
     }
+
+    user.password = request.post().password
+    user.save()
 
     return response.status(200).json({message: 'رمز شما با موفقیت تغییر یافت.'});
   }

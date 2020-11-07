@@ -12,6 +12,7 @@ Factory.blueprint('App/Models/User', (faker) => {
     role: 'costumer',
     last_order: new Date(),
     point_expire: new Date(),
+    phone_verified: true,
   }
 });
 

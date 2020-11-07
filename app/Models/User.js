@@ -47,6 +47,9 @@ class User extends Model {
     return this.hasOne('App/Models/Coffe')
   }
 
+  isVerified(){
+    return this.phone_verified
+  }
 }
 
 module.exports = User

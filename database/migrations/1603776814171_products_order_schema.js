@@ -8,6 +8,8 @@ class ProductsOrderSchema extends Schema {
     this.create('products_orders', (table) => {
       table.increments()
       table.integer('product_id').unsigned().notNullable()
+      table.string('product_name').notNullable()
+      table.float('product_price').unsigned().notNullable()
       table.integer('order_id').unsigned().notNullable()
       table.integer('count').unsigned().notNullable().default(1)
       table.timestamps()

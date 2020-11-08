@@ -23,5 +23,9 @@ Route.group(() => {
   Route.resource('/desk', 'coffe/DeskController').apiOnly();
   Route.resource('/policy', 'coffe/PolicyController').apiOnly();
   Route.resource('/menu', 'coffe/MenuController').apiOnly();
+  Route.resource('/order', 'coffe/OrderController').apiOnly();
+  Route.get('/order/active', 'coffe/OrderController.show_active').as('order.show.active');
+  Route.put('/order/:id/close', 'coffe/OrderController.close').as('order.close');
+  
 }).prefix('coffe');
 // middleware(['auth:jwt'])

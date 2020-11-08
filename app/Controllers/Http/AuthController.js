@@ -4,18 +4,45 @@ const Kavenegar = require('kavenegar');
 const randomstring = require("randomstring");
 const moment = use('moment');
 const User = use('App/Models/User');
+const Coffe = use('App/Models/Coffe');
+const Hash = use('Hash')
 
 class AuthController {
 
-  async login({request, auth}) {
-    const {phone, password} = request.all()
-    return await auth.attempt(phone, password)
+  async login({request, response, auth}) {
+    const {phone, password, link} = request.all()
+
+    if (link) {
+      let coffe = await Coffe.query().where({link}).first()
+
+      if (!coffe)
+        return response.status(400)
+
+      let user = await User.query().where({coffe_id: coffe.id}).where({phone}).first();
+
+      if (!user)
+        return response.status(400).json({message: 'چنین کاربری وجود ندارد'})
+
+      if (!await Hash.verify(password, user.password))
+        return response.status(400).json({message: 'رمز وارد شده اشتباه است'})
+
+      return auth.generate(user)
+    }
+
+    return auth.attempt(phone, password)
   }
 
   async register({request, response}) {
     let user = null
+    let link = request.post().link
+    let coffe = null;
+
+    if (link) {
+      coffe = await Coffe.query().where({link}).first()
+    }
+
     try {
-      user = await User.create({...request.only(['name', 'phone', 'password'])});
+      user = await User.create({...request.only(['name', 'phone', 'password']), coffe_id: coffe.id});
       let code = await this.sendCode(request.post().phone);
       user.active_code = code
       user.save();
@@ -30,7 +57,7 @@ class AuthController {
         return response.status(400).json({message: 'پس از دو دقیقه دوباره امتحان کنید.'});
       } else {
         let code = await this.sendCode(request.post().phone);
-        user.fill({...request.only(['name', 'phone', 'password']),active_code:code});
+        user.fill({...request.only(['name', 'phone', 'password']), active_code: code});
         await user.save();
       }
     }
@@ -50,7 +77,7 @@ class AuthController {
 
   async sendCode(phone) {
     let code = Math.floor(Math.random() * 9999) + 10000;
-    let message = "کد تایید همدرس: ";
+    let message = "کد تایید باشگاه مشتریان : ";
     message += code;
 
     let api = Kavenegar.KavenegarApi({

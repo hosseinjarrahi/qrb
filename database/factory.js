@@ -12,6 +12,7 @@ Factory.blueprint('App/Models/User', (faker) => {
     role: 'costumer',
     last_order: new Date(),
     point_expire: new Date(),
+    coffe_id: 1,
     phone_verified: true,
   }
 });
@@ -31,7 +32,7 @@ Factory.blueprint('App/Models/Product', (faker) => {
     menu_id: 1,
     desc: faker.paragraph({ sentences: 1 }),
     price: 15.5,
-    name: 'pizza  jalab',
+    name: 'پیتزا پشمکی',
   }
 });
 

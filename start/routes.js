@@ -2,8 +2,6 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
-const User = use('App/Models/User')
-const Kavenegar = require('kavenegar');
 
 Route.get('/link/:link', 'user/HomeController.index')
 
@@ -26,6 +24,5 @@ Route.group(() => {
   Route.resource('/order', 'coffe/OrderController').apiOnly();
   Route.get('/order/active', 'coffe/OrderController.show_active').as('order.show.active');
   Route.put('/order/:id/close', 'coffe/OrderController.close').as('order.close');
-  
 }).prefix('coffe');
 // middleware(['auth:jwt'])

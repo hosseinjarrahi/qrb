@@ -16,4 +16,5 @@
 const Ws = use('Ws')
 
 Ws.channel('order:*','OrderController')
-Ws.channel('coffe','CoffeController')
+Ws.channel('coffe:*','CoffeController')
+Ws.channel('desk:*','DeskController')

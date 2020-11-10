@@ -35,6 +35,7 @@ class User extends Model {
     return this.belongsTo('App/Models/coffe')
   }
 
+
   isVerified() {
     return this.phone_verified
   }

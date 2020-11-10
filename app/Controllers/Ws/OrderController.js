@@ -1,15 +1,19 @@
 'use strict'
+const Ws = use('Ws')
 const Order = use('App/Models/Order')
+const Desk = use('App/Models/Desk')
 const ProductsOrder = use('App/Models/ProductsOrder')
 
 class OrderController {
-  constructor ({ socket, request ,auth}) {
+
+  constructor({socket, request, auth}) {
     this.socket = socket
     this.request = request
     this.auth = auth
+    this.sendDeskState(socket.topic, 'open')
   }
 
-  async onMessage(basketList){
+  async onMessage(basketList) {
     basketList = Array.isArray(basketList) ? basketList : []
     let spliced = this.socket.topic.split(':')
     let coffeId = spliced[1]
@@ -19,13 +23,13 @@ class OrderController {
     user = user ? user.id : null
 
     let order = await Order.create({
-      coffe_id:coffeId,
-      desk_id:deskId,
-      user_id:user,
+      coffe_id: coffeId,
+      desk_id: deskId,
+      user_id: user,
       total,
     })
 
-    basketList.forEach(item => {
+    await basketList.forEach(item => {
       ProductsOrder.create({
         product_id: item.food.id,
         product_name: item.food.name,
@@ -35,7 +39,23 @@ class OrderController {
       })
     })
 
-    this.socket.broadcast(`coffe:${coffeId}`,basketList)
+    let lastOrder = await Order.query().with('product_order').where({id: order.id}).first()
+
+    let topic = Ws.getChannel('coffe:*').topic(`coffe:${coffeId}`)
+    topic.broadcastToAll('order', lastOrder)
+  }
+
+  async onClose(socket) {
+    await this.sendDeskState(socket.topic, 'close')
+  }
+
+  async sendDeskState(topic, state) {
+    let spliced = topic.split(':')
+    let coffeId = spliced[1]
+    let deskId = spliced[2]
+    await Desk.query().where({id: deskId}).update({online: state === 'open'})
+    let deskChannel = await Ws.getChannel('coffe:*')
+    deskChannel.topic(`coffe:${coffeId}`).broadcastToAll('desk', {deskId,state})
   }
 
 }

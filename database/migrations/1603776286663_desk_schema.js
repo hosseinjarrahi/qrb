@@ -10,6 +10,7 @@ class DeskSchema extends Schema {
       table.integer('coffe_id').unsigned().notNullable()
       table.string('qr')
       table.string('name')
+      table.boolean('online').default(false)
       table.timestamps()
     })
   }

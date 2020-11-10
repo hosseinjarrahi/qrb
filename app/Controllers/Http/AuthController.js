@@ -66,7 +66,7 @@ class AuthController {
   }
 
   async user({request, response, auth}) {
-    return {user: auth.getUser()}
+    return {user: await auth.getUser()}
   }
 
   async logout({request, response, auth}) {

@@ -5,11 +5,10 @@ const Menu = use('App/Models/Menu')
 class ProductController {
 
   async index({request, response, auth}) {
-        // let user = await auth.getUser()
-    // let user_coffe = await user.coffe().fetch()
-    // let coffe_id =  user_coffe.id
-    let menu = await Menu.query().where('coffe_id', 1).pluck('id');
-    let menu_name = await Menu.query().where('coffe_id', 1).fetch();
+    let user = await auth.getUser()
+    let coffe = await user.coffe().first()
+    let menu = await Menu.query().where('coffe_id', coffe.id).pluck('id');
+    let menu_name = await Menu.query().where('coffe_id', coffe.id).fetch();
     let product = await Product.query().whereIn('menu_id', menu).fetch();
     return {menu_name, product}
 
@@ -17,7 +16,7 @@ class ProductController {
   }
 
   async store({request, response, auth}) {
-    
+
     // let coffe = auth.user.coffe().with('menus').fetch();
 
     // let found = coffe.menus.filter((menu) => menu.id == request.post().menu_id)
@@ -48,7 +47,7 @@ class ProductController {
       'price',
       'name',
     ]));
-    
+
     return {message: 'با موفقیت ثبت شد'};
   }
 

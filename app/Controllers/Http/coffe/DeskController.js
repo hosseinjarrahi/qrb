@@ -6,13 +6,17 @@ const Coffe = use('App/Models/Coffe')
 class DeskController {
 
   async index({request, response, auth}) {
-    let coffe = await auth.user.coffe().with('desks').fetch();
+    let user = await auth.getUser()
+
+    let coffe = await user.coffe().with('desks').fetch();
 
     return {desks: coffe.desks, coffe}
   }
 
   async store({request, response, auth}) {
-    let coffe = auth.user.coffe().fetch();
+    let user = await auth.getUser()
+
+    let coffe = await user.coffe().first();
 
     let desk = await Desk.create(request.only([coffe.id, 'qr', 'name']));
 

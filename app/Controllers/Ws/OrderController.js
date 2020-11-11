@@ -13,6 +13,14 @@ class OrderController {
     this.sendDeskState(socket.topic, 'open')
   }
 
+  async onBell(){
+    let spliced = this.socket.topic.split(':')
+    let coffeId = spliced[1]
+    let deskId = spliced[2]
+    let topic = Ws.getChannel('coffe:*').topic(`coffe:${coffeId}`)
+    topic.broadcastToAll('bell',deskId)
+  }
+
   async onMessage(basketList) {
     basketList = Array.isArray(basketList) ? basketList : []
     let spliced = this.socket.topic.split(':')

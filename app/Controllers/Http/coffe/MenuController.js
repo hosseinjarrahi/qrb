@@ -5,19 +5,18 @@ const Menu = use('App/Models/Menu')
 class MenuController {
 
   async index({request, response, auth}) {
-    // let user = await auth.getUser()
-    // let user_coffe = await user.coffe().fetch()
-    // let coffe_id =  user_coffe.id
-    let menu = await Menu.query().where('coffe_id', 1).fetch()
+    let user = await auth.getUser()
+    let coffe = await user.coffe().first()
+    let menu = await Menu.query().where('coffe_id', coffe.id).fetch()
+
     return {menu};
   }
 
   async store({request, response, auth}) {
-    // let user = await auth.getUser()
-    // let user_coffe = await user.coffe().fetch()
-    // let coffe_id =  user_coffe.id 
-    let coffe_id =1
-    let menu = await Menu.create({...request.only(['pic', 'body']),coffe_id});
+    let user = await auth.getUser()
+    let coffe = await user.coffe().first()
+    let menu = await Menu.create({...request.only(['pic', 'body']),coffe_id:coffe.id});
+
     return {message: 'با موفقیت ثبت شد', menu};
   }
 
@@ -29,6 +28,7 @@ class MenuController {
 
   async update({params, request, response}) {
     await Menu.query().where({id: params.id}).update(request.only(['pic', 'body']));
+
     return {message: 'باموفقیت ویرایش شد'};
   }
 

@@ -5,7 +5,7 @@ const Menu = use('App/Models/Menu')
 class MenuController {
 
   async index({request, response, auth}) {
-    // let user = await auth.getUser()
+    let user = await auth.getUser()
     // let user_coffe = await user.coffe().fetch()
     // let coffe_id =  user_coffe.id
     let menu = await Menu.query().where('coffe_id', 1).fetch()

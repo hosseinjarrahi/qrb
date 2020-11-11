@@ -6,9 +6,9 @@ class MenuController {
 
   async index({request, response, auth}) {
     let user = await auth.getUser()
-    // let user_coffe = await user.coffe().fetch()
-    // let coffe_id =  user_coffe.id
-    let menu = await Menu.query().where('coffe_id', 1).fetch()
+    let user_coffe = await user.coffe().fetch()
+    let coffe_id =  user_coffe.id
+    let menu = await Menu.query().where('coffe_id', coffe_id).fetch()
     return {menu};
   }
 

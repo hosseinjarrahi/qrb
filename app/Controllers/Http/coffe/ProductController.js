@@ -16,12 +16,12 @@ class ProductController {
   }
 
   async store({request, response, auth}) {
+    let user = await auth.getUser()
+    let coffe = await user.coffe().with('menus').first()
 
-    // let coffe = auth.user.coffe().with('menus').fetch();
+    let found = coffe.menus.filter((menu) => menu.id == request.post().menu_id)
 
-    // let found = coffe.menus.filter((menu) => menu.id == request.post().menu_id)
-
-    // if(!!found[0]) return {message : 'دسترسی به این بخش میسر نیست'}
+    if(!!found[0]) return {message : 'دسترسی به این بخش میسر نیست'}
 
     let product = await Product.create(request.only([
       'menu_id',
@@ -39,8 +39,9 @@ class ProductController {
     return {product};
   }
 
-  async update({params, request, response}) {
-    // let coffe = auth.user.coffe().with('menus.products').fetch();
+  async update({params, request, auth,response}) {
+    // let user = await auth.getUser()
+    // let coffe = await user.coffe().with('menus.products').first()
     let product = await Product.query().where('id', params.id).update(request.only([
       'menu_id',
       'desc',

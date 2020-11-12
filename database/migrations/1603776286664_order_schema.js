@@ -11,6 +11,7 @@ class OrderSchema extends Schema {
       table.integer('user_id').unsigned()
       table.integer('desk_id').unsigned().notNullable()
       table.float('total').unsigned().notNullable()
+      table.text('desc')
       table.enu('pay_state',['success','failed']).default('failed').notNullable()
       table.enu('success_taken',['closed','open']).default('open').notNullable()
       table.string('trace_code')

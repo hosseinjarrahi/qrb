@@ -14,6 +14,7 @@ Route.post('register/reset-password', 'AuthController.resetPassword');
 Route.post('register/change-password', 'AuthController.changePassword');
 Route.get('user', 'AuthController.user').middleware('auth')
 Route.get('user', 'AuthController.user').middleware('auth')
+Route.post('comment', 'user/HomeController.comment')
 
 Route.group(() => {
   Route.get('/dashboard', 'coffe/DashboardController.index');
@@ -21,7 +22,6 @@ Route.group(() => {
   Route.resource('/desk', 'coffe/DeskController').apiOnly();
   Route.resource('/policy', 'coffe/PolicyController').apiOnly();
   Route.resource('/menu', 'coffe/MenuController').apiOnly();
-  Route.get('/order/active', 'coffe/OrderController.show_active').as('order.show.active');
   Route.put('/order/:id/close', 'coffe/OrderController.close').as('order.close');
   Route.resource('/order', 'coffe/OrderController').apiOnly();
   Route.resource('/user', 'coffe/UserController');

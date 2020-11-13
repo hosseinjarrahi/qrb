@@ -11,7 +11,7 @@ class CoffeSchema extends Schema {
       table.string('logo');
       table.string('link').unique().notNullable();
       table.integer('user_id').unsigned().notNullable()
-      table.enu('plan', ['A', 'B', 'C', 'D']).notNullable();
+      table.text('plans')
       table.timestamps();
     })
   }

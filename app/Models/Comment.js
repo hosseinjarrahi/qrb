@@ -9,6 +9,14 @@ class Comment extends Model {
     return this.belongsTo('App/Models/Order')
   }
 
+  getOptions(options){
+    let parsed = JSON.parse(options)
+    return Array.isArray(parsed) ? parsed : []
+  }
+
+  setOptions(options){
+    return JSON.stringify(options)
+  }
 
 }
 

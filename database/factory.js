@@ -23,7 +23,6 @@ Factory.blueprint('App/Models/Coffe', (faker) => {
     link: faker.hash(),
     logo: faker.logo,
     user_id: 1,
-    plan: 'A',
   }
 });
 

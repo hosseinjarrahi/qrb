@@ -1,6 +1,7 @@
 'use strict'
 
 const Coffe = use('App/Models/Coffe')
+const Comment = use('App/Models/Comment')
 const moment = use('moment')
 
 class HomeController {
@@ -16,9 +17,26 @@ class HomeController {
           user.save()
         }
       }
-    } catch (e) {}
+    } catch (e) {
+    }
 
-    return coffe
+    return {coffe}
+  }
+
+  async comment({request, auth}) {
+    let {rate, coffe_id, body, order_id,options} = request.post()
+    let user = {id: null}
+    try {
+      user = await auth.getUser()
+    } catch (e){}
+    Comment.create({
+      rate,
+      coffe_id,
+      order_id,
+      body,
+      options,
+      user_id:user.id
+    })
   }
 
 }

@@ -15,6 +15,7 @@ Route.post('register/change-password', 'AuthController.changePassword');
 Route.get('user', 'AuthController.user').middleware('auth')
 Route.get('user', 'AuthController.user').middleware('auth')
 Route.post('comment', 'user/HomeController.comment')
+Route.post('membership', '/MembershipController.store')
 
 Route.group(() => {
   Route.get('/dashboard', 'coffe/DashboardController.index');

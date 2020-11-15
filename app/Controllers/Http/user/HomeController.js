@@ -3,6 +3,8 @@
 const Coffe = use('App/Models/Coffe')
 const Comment = use('App/Models/Comment')
 const moment = use('moment')
+const Order = use('App/Models/Order')
+
 
 class HomeController {
 
@@ -37,6 +39,16 @@ class HomeController {
       options,
       user_id:user.id
     })
+  }
+  async order({request, params}) {
+    let orders = await Order.query()
+    .where('coffe_id', params.coffeId)
+    .where('desk_id', params.deskId)
+    .where('success_taken', 'open')
+    .with('product_order')
+    .fetch();
+
+    return {orders}
   }
 
 }

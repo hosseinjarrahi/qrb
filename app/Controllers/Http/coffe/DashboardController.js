@@ -5,7 +5,6 @@ class DashboardController {
     let user = await auth.getUser()
 
     let coffe = await user.coffe().fetch()
-    return coffe
 
 
     return {coffe}

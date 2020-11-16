@@ -11,6 +11,7 @@ class CommentSchema extends Schema {
       table.integer('order_id').unsigned().notNullable()
       table.text('body')
       table.text('options')
+      table.enu('status',['old','new']).default('new')
       table.integer('user_id').unsigned()
       table.float('rate').unsigned()
       table.timestamps()

@@ -11,25 +11,31 @@ class AuthController {
 
   async login({request, response, auth}) {
     const {phone, password, link} = request.all()
+    let user
 
     if (link) {
       let coffe = await Coffe.query().where({link}).first()
-
-      if (!coffe)
-        return response.status(400)
-
-      let user = await User.query().where({coffe_id: coffe.id}).where({phone}).first();
-
-      if (!user)
-        return response.status(400).json({message: 'چنین کاربری وجود ندارد'})
-
-      if (!await Hash.verify(password, user.password))
-        return response.status(400).json({message: 'رمز وارد شده اشتباه است'})
-
-      return auth.generate(user)
     }
 
-    return auth.attempt(phone, password)
+    if (link && !coffe) {
+      return response.status(400)
+    }
+
+    if (link) {
+      user = await User.query().where({coffe_id: coffe.id}).where({phone}).first();
+    } else {
+      user = await User.query().where({phone}).first();
+    }
+
+    if (!user) {
+      return response.status(400).json({message: 'چنین کاربری وجود ندارد'})
+    }
+
+    if (!await Hash.verify(password, user.password)) {
+      return response.status(400).json({message: 'رمز وارد شده اشتباه است'})
+    }
+
+    return auth.generate(user)
   }
 
   async register({request, response}) {
@@ -42,16 +48,19 @@ class AuthController {
     }
 
     try {
-      user = await User.create({...request.only(['name', 'phone', 'password']), coffe_id: coffe.id});
-      let code = await this.sendCode(request.post().phone);
+      if (coffe)
+        user = await User.create({...request.only(['name', 'phone', 'password']), coffe_id: coffe.id});
+      else
+        user = await User.create({...request.only(['name', 'phone', 'password'])});
+      let code;
+      if (user)
+        code = await this.sendCode(request.post().phone);
       user.active_code = code
       user.save();
     } catch (e) {
       user = await User.query().where({phone: request.post().phone}).where({phone_verified: false}).first();
-      if (!user) {
-        if (e.errno === 1062) {
-          return response.status(400).json({message: 'این شماره تلفن قبلا ثبت شده است.'});
-        }
+      if (!user && e.errno === 1062) {
+        return response.status(400).json({message: 'این شماره تلفن قبلا ثبت شده است.'});
       }
       if (moment().subtract(2, 'minutes').isBefore(user.updated_at)) {
         return response.status(400).json({message: 'پس از دو دقیقه دوباره امتحان کنید.'});
@@ -84,7 +93,7 @@ class AuthController {
       apikey: '4778426C5839394D6562307A64635567314E6C6F426638614478732F6D56696C4B7336626E7857594F6E413D'
     });
 
-    api.VerifyLookup({receptor: phone, token: code, template: 'verify'}, (response, status) => {
+    api.VerifyLookup({receptor: phone, token: code, template: 'verifyMenu'}, (response, status) => {
       User.query().where('phone', phone).update({active_code: code});
     });
 

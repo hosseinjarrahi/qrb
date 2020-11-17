@@ -30,4 +30,5 @@ Route.group(() => {
   Route.resource('/user', 'coffe/UserController');
   Route.get('/comment/active', 'coffe/CommentController.show_active').as('comment.show.active');
   Route.resource('/comment', 'coffe/CommentController');
+  Route.get('/comment/active', 'coffe/CommentController.show_active').as('comment.show.active');
 }).prefix('coffe').middleware(['auth:jwt']);

@@ -5,6 +5,9 @@ const Route = use('Route')
 
 Route.get('/link/:link', 'user/HomeController.index')
 
+Route.post('/checkout', 'user/HomeController.checkout')
+Route.get('/verify', 'user/HomeController.verify')
+
 Route.post('login', 'AuthController.login').middleware('guest')
 Route.post('logout', 'AuthController.logout').middleware('auth')
 Route.post('register', 'AuthController.register').middleware('guest')
@@ -30,5 +33,4 @@ Route.group(() => {
   Route.resource('/user', 'coffe/UserController');
   Route.get('/comment/active', 'coffe/CommentController.show_active').as('comment.show.active');
   Route.resource('/comment', 'coffe/CommentController');
-  Route.get('/comment/active', 'coffe/CommentController.show_active').as('comment.show.active');
 }).prefix('coffe').middleware(['auth:jwt']);

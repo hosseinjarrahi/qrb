@@ -1,8 +1,8 @@
 {
-  "name": "adonis-api-app",
+  "name": "qrcode",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
-  "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+  "description": "qrcode",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -12,8 +12,8 @@
     "adonisjs",
     "adonis-app"
   ],
-  "author": "",
-  "license": "UNLICENSED",
+  "author": "Partech",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@adonisjs/ace": "^5.0.8",
@@ -27,7 +27,8 @@
     "@adonisjs/websocket": "^1.0.12",
     "kavenegar": "^1.1.4",
     "mysql": "^2.18.1",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "zarinpal-checkout": "^0.2.7"
   },
   "devDependencies": {},
   "autoload": {

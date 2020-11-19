@@ -17,10 +17,40 @@ class OrderController {
     return {order, coffe};
   }
 
-  async close({params}) {
-    await Order.query()
+  async close({auth, params}) {
+
+    let order = await Order.query()
       .where({id: params.id})
-      .update({success_taken: 'closed'});
+      .first()
+    order.success_taken = 'closed';
+    order.save();
+
+    let user
+    let coffe
+    let policy
+    try {
+      coffe = await order.coffe().fetch()
+      policy = await coffe.policy().fetch()
+      user = await order.user().fetch()
+    } catch (e) {
+    }
+
+    if (!user)
+      return
+
+    try {
+      let point = order.total / policy.point_per_money
+      user.point_expire = moment().add('days', coffe.policy.day_to_delete_point ? policy.day_to_delete_point : 0).format('YYYY-MM-DD HH:mm:ss')
+      user.point += point
+      user.save()
+    } catch (e) {
+      }
+
+  }
+
+  async destroy({params}) {
+    let order = await Order.find(params.id);
+    order.delete()
   }
 
 }

@@ -12,9 +12,10 @@ class AuthController {
   async login({request, response, auth}) {
     const {phone, password, link} = request.all()
     let user
+    let coffe
 
     if (link) {
-      let coffe = await Coffe.query().where({link}).first()
+      coffe = await Coffe.query().where({link}).first()
     }
 
     if (link && !coffe) {

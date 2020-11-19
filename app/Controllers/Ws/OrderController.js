@@ -36,7 +36,6 @@ class OrderController {
     try {
       user = await this.auth.getUser()
       let policy = await Policy.query().where('coffe_id', coffeId).first()
-      point = total / policy.point_per_money
       if (data.useOff) {
         let foodPoint = total / policy.point_cost
         if (foodPoint - user.point >= 0) {
@@ -47,8 +46,7 @@ class OrderController {
           total = 0
         }
       }
-      user.point = point
-      user.point_expire = moment().add('days',policy.day_to_delete_point ? policy.day_to_delete_point : 0).format('YYYY-MM-DD HH:mm:ss')
+      user.point += point
       user.save()
     } catch (e) {
       console.log(e)

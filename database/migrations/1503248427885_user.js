@@ -18,6 +18,7 @@ class UserSchema extends Schema {
       table.enu('role', ['coffe_man', 'costumer', 'admin']).default('costumer').notNullable()
       table.timestamp('last_order').notNullable()
       table.timestamp('point_expire').defaultTo(this.fn.now())
+      table.timestamp('plan_expire').defaultTo(this.fn.now())
       table.timestamps()
       table.unique(['coffe_id', 'phone'])
     })

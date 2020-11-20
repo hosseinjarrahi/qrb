@@ -5,8 +5,8 @@ const Route = use('Route')
 
 Route.get('/link/:link', 'user/HomeController.index')
 
-Route.post('/checkout', 'user/HomeController.checkout')
-Route.get('/verify', 'user/HomeController.verify')
+Route.post('/checkout', 'user/HomeController.checkout').middleware('throttle:10,60')
+Route.get('/verify', 'user/HomeController.verify').middleware('throttle:10,60')
 
 Route.post('login', 'AuthController.login').middleware('guest')
 Route.post('logout', 'AuthController.logout').middleware('auth')
@@ -17,8 +17,8 @@ Route.post('register/reset-password', 'AuthController.resetPassword');
 Route.post('register/change-password', 'AuthController.changePassword');
 Route.get('user', 'AuthController.user').middleware('auth')
 Route.get('user', 'AuthController.user').middleware('auth')
-Route.post('comment', 'user/HomeController.comment')
-Route.post('membership', '/MembershipController.store')
+Route.post('comment', 'user/HomeController.comment').middleware('throttle:10,60')
+Route.post('membership', '/MembershipController.store').middleware('throttle:10,60')
 Route.get('order/coffe/:coffeId/desk/:deskId', 'user/HomeController.order')
 
 

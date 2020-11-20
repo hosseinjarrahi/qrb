@@ -9,7 +9,7 @@ Factory.blueprint('App/Models/User', (faker) => {
     name: 'حسین جراحی',
     phone: '09033144565',
     password: 'password',
-    role: 'costumer',
+    role: 'coffe_man',
     last_order: new Date(),
     point_expire: new Date(),
     coffe_id: 1,
@@ -19,7 +19,7 @@ Factory.blueprint('App/Models/User', (faker) => {
 
 Factory.blueprint('App/Models/Coffe', (faker) => {
   return {
-    name: 'mr coffe ro',
+    name: 'کافه من',
     link: faker.hash(),
     logo: faker.logo,
     user_id: 1,
@@ -31,7 +31,7 @@ Factory.blueprint('App/Models/Product', (faker) => {
     menu_id: 1,
     desc: faker.paragraph({ sentences: 1 }),
     price: 15.5,
-    name: 'پیتزا پشمکی',
+    name: 'پیتزا پپرونی',
   }
 });
 

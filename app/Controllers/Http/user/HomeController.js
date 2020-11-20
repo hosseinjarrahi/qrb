@@ -108,10 +108,8 @@ class HomeController {
 
     let res = await zarinpal.PaymentRequest({
       Amount: total * 1000, // In Tomans
-      CallbackURL: 'http://localhost:3333/verify?amount=' + total * 1000 + '&oi=' + order.id,
-      Description: 'A Payment from Node.JS',
-      Email: 'hi@siamak.work',
-      Mobile: '09120000000'
+      CallbackURL: 'https://menuman.ir/verify?amount=' + total * 1000 + '&oi=' + order.id,
+      Description: 'پرداخت بابت سفارش',
     })
 
     return res

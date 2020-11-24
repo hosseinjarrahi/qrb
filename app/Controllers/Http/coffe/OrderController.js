@@ -9,9 +9,10 @@ class OrderController {
     let coffe = await user.coffe().with('desks').first()
     if (!coffe.hasPlan('order')) return response.status(400).json('access denied')
     let order = await Order.query()
+      .with('desk')
+      .with('product_order')
       .where('coffe_id', coffe.id)
       .where('created_at', '>', moment().format('YYYY-MM-DD 00:00:00'))
-      .with('product_order')
       .fetch();
 
     return {order, coffe};

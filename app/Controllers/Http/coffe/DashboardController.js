@@ -6,7 +6,6 @@ class DashboardController {
 
     let coffe = await user.coffe().fetch()
 
-
     return {coffe}
   }
 }

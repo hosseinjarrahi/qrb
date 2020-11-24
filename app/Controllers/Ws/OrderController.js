@@ -70,7 +70,7 @@ class OrderController {
       })
     })
 
-    let lastOrder = await Order.query().with('product_order').where({id: order.id}).first()
+    let lastOrder = await Order.query().with('product_order').with('desk').where({id: order.id}).first()
 
     this.socket.broadcastToAll(`comment:${deskId}`, lastOrder.id)
 

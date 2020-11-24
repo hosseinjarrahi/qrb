@@ -8,7 +8,7 @@ const moment = use('moment')
 const Order = use('App/Models/Order')
 const Policy = use('App/Models/Policy')
 const ProductsOrder = use('App/Models/ProductsOrder')
-
+const Env = use('Env')
 
 class HomeController {
 
@@ -59,7 +59,7 @@ class HomeController {
 
   async checkout({request, params,auth}) {
 
-    const zarinpal = await ZarinpalCheckout.create('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', true);
+    const zarinpal = await ZarinpalCheckout.create('ff8ac06e-6785-11e9-bbb4-000c29344814', false);
 
     let basketList = request.post().basket
     let desc = request.post().desc
@@ -106,9 +106,11 @@ class HomeController {
       })
     })
 
+    let host = Env.get('NODE_ENV') != 'development' ? 'https://menuman.iran.liara.run' : 'http://localhost:3333'
+
     let res = await zarinpal.PaymentRequest({
       Amount: total * 1000, // In Tomans
-      CallbackURL: 'https://menuman.ir/verify?amount=' + total * 1000 + '&oi=' + order.id,
+      CallbackURL: '/verify?amount=' + total * 1000 + '&oi=' + order.id,
       Description: 'پرداخت بابت سفارش',
     })
 
@@ -117,7 +119,7 @@ class HomeController {
 
   async verify({request, response, params}) {
 
-    const zarinpal = await ZarinpalCheckout.create('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', true);
+    const zarinpal = await ZarinpalCheckout.create('ff8ac06e-6785-11e9-bbb4-000c29344814', false);
 
     let res = await zarinpal.PaymentVerification({
       Amount: request.get().amount, // In Tomans
